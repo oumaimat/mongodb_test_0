@@ -56,22 +56,43 @@ collectionName = "users"
 #
 # print (genericDAO.insertObjectInCollection(collectionName, userToInsert.parseToDict()))
 
+
 # tester la méthode getAllRecords
 #
-
 usersList = GenericDAO.getAllRecords(collectionName)
 
 for user in usersList:
     print(user)
 
+# tester la méthode getRecordObjectFromCollection
+criteria = {"userPseudo" : "pseudo test 4"}
+
+usersToRemoveList = genericDAO.getRecords(collectionName, criteria)
+
+if (len(usersToRemoveList) > 0) :
+    # tester la méthode removeOneObjectFromCollection
+
+    userToRemoveTest = User.parseToUser(usersToRemoveList[0])
+    removeResult = genericDAO.removeOneObjectFromCollection(collectionName, userToRemoveTest._id)
+
+    print("\n Résultat suppression : \n", removeResult)
+
+else :
+    print("\n Pas d'éléments à supprimer")
+
+
+
+
+
+
 #Tester les méthodes suppression et getOne
 
 # tester la méthode getOneRecord
-
-retrievedUser = User.parseToUser(usersList[0])
-userGetOneTest = GenericDAO.getOneRecord(collectionName, retrievedUser._id )
-
-print("\n userGetOneTest : \n", userGetOneTest)
+#
+# retrievedUser = User.parseToUser(usersList[0])
+# userGetOneTest = GenericDAO.getOneRecord(collectionName, retrievedUser._id )
+#
+# print("\n userGetOneTest : \n", userGetOneTest)
 
 
 # Données test, à examiner plus tard
