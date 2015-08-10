@@ -58,10 +58,21 @@ collectionName = "users"
 
 # tester la méthode getAllRecords
 #
-for user in GenericDAO.getAllRecords(collectionName):
+
+usersList = GenericDAO.getAllRecords(collectionName)
+
+for user in usersList:
     print(user)
 
 #Tester les méthodes suppression et getOne
+
+# tester la méthode getOneRecord
+
+retrievedUser = User.parseToUser(usersList[0])
+userGetOneTest = GenericDAO.getOneRecord(collectionName, retrievedUser._id )
+
+print("\n userGetOneTest : \n", userGetOneTest)
+
 
 # Données test, à examiner plus tard
 # pref1 = {}

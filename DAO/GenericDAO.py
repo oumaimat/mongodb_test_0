@@ -62,15 +62,15 @@ class GenericDAO :
         return removeResult
 
     # Supprimer un ou plusieurs enregistrements dans une collection
-    def removeOneObjectFromCollection(self,collectionName, objectCriterias):
+    def removeObjectFromCollection(self,collectionName, objectCriteria):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
-        removeResult = collection.remove(objectCriterias)
+        removeResult = collection.remove(objectCriteria)
 
         return removeResult
 
     # Méthode à n'utiliser que dans certains cas par la suite à cause du très grand nombre d'enregistrements
-    def getAllRecords(self, collectionName):
+    def getAllRecords(collectionName):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
         recordsList = list(collection.find())
@@ -78,9 +78,9 @@ class GenericDAO :
         return recordsList
 
     # Extraire un enregistrement
-    def getOneRecord(self, collectionName, object):
+    def getOneRecord(collectionName, objectID):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
-        foundObject = collection.find_one(object)
+        foundObject = collection.find_one(objectID)
 
         return foundObject

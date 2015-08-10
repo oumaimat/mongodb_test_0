@@ -2,6 +2,7 @@ __author__ = 'OTurki'
 
 class User :
 
+    _id = ""
     userPseudo = ""
     userNom = ""
     userPrenom = ""
@@ -13,10 +14,21 @@ class User :
 
 
     def parseToDict(self):
-        User = {}
-        User["userPseudo"] = self.userPseudo
-        User["userNom"] = self.userNom
-        User["userPrenom"] = self.userPrenom
+        user = {}
+
+        user["userPseudo"] = self.userPseudo
+        user["userNom"] = self.userNom
+        user["userPrenom"] = self.userPrenom
 
         #Function return result
         return User
+
+    def parseToUser(userDict):
+
+
+        user = User(userDict["userPseudo"], userDict["userNom"], userDict["userPrenom"])
+
+        user._id = userDict["_id"]
+
+        #Function return result
+        return user
