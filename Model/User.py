@@ -21,7 +21,7 @@ class User :
         user["userPrenom"] = self.userPrenom
 
         #Function return result
-        return User
+        return user
 
     def parseToUser(userDict):
 

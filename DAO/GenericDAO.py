@@ -46,7 +46,7 @@ class GenericDAO :
     connectionToDatabase = ConnectionToDatabase()
 
     # Insérer un enregistrement dans une collection
-    def insertObjectInCollection(self, collectionName, object):
+    def insertObject(self, collectionName, object):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
         insertionResult = collection.insert_one(object)
@@ -54,7 +54,7 @@ class GenericDAO :
         return insertionResult
 
     # Supprimer un enregistrement dans une collection
-    def removeOneObjectFromCollection(self, collectionName, objectID ):
+    def removeOneObject(self, collectionName, objectID ):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
         removeResult = collection.remove(objectID)
@@ -62,15 +62,26 @@ class GenericDAO :
         return removeResult
 
     # Supprimer un ou plusieurs enregistrements dans une collection
-    def removeObjectFromCollection(self, collectionName, objectCriteria):
+    def removeObjects(self, collectionName, objectCriteria):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
         removeResult = collection.remove(objectCriteria)
 
         return removeResult
 
+    # Mettre à jour un ou plusieurs enregistrements dans une collection
+    def updateObjects(self, collectionName, objectCriteria, objectUpdate):
+
+        collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
+
+        # Mettre le update operator à $set
+        addedUpdateOperator = {"$set": objectUpdate}
+        updateResult = collection.update_many(objectCriteria, addedUpdateOperator)
+
+        return updateResult
+
     # Méthode à n'utiliser que dans certains cas par la suite à cause du très grand nombre d'enregistrements
-    def getAllRecords(collectionName):
+    def getAllObjects(collectionName):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
         recordsList = list(collection.find())
@@ -78,7 +89,7 @@ class GenericDAO :
         return recordsList
 
     # Extraire un enregistrement
-    def getOneRecord(collectionName, objectID):
+    def getOneObject(collectionName, objectID):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
         foundObject = collection.find_one(objectID)
@@ -86,7 +97,7 @@ class GenericDAO :
         return foundObject
 
     # Extraire un ou plusieurs enregistrements
-    def getRecords(self, collectionName, objectCriteria):
+    def getObjects(self, collectionName, objectCriteria):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
         foundObjects = list(collection.find(objectCriteria))
