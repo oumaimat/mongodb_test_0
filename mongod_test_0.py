@@ -52,8 +52,8 @@ collectionName = "users"
 # tester la méthode insertObject
 #
 # inserer un user test dans la collection
-# userToInsert = User("pseudo test 4","nom test 4", "prénom test 4")
-# userToInsert2 = User("pseudo test 5","nom test 4", "prénom test 5")
+# userToInsert = User("pseudo55", "55", "nom11", "prénom11")
+# userToInsert2 = User("pseudo56", "56", "nom12", "prénom12")
 #
 # print ("\n Résultat insertion :\n", genericDAO.insertObject(collectionName, userToInsert.parseToDict()))
 # print ("\n Résultat insertion :\n", genericDAO.insertObject(collectionName, userToInsert2.parseToDict()))
