@@ -5,7 +5,7 @@ __author__ = 'OTurki'
 from Model.User import  User
 from DAO.GenericDAO import GenericDAO
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from bson.objectid import ObjectId
 import json
 import datetime
@@ -37,12 +37,18 @@ def get_users():
 
     return res
 
+@app.route('/servus/user', methods=['POST'])
+def get_user():
 
-test = get_users()
+    request_data = request.json
 
-print(test)
+    user = GenericDAO.getObjects(collectionName, request_data)
 
-# if __name__ == '__main__':
-#     app.run()
+    res = json.dumps(user, cls=MongoJsonEncoder)
+
+    return res
+
+if __name__ == '__main__':
+     app.run()
 
 

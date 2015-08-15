@@ -97,7 +97,7 @@ class GenericDAO :
         return foundObject
 
     # Extraire un ou plusieurs enregistrements
-    def getObjects(self, collectionName, objectCriteria):
+    def getObjects(collectionName, objectCriteria):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
         foundObjects = list(collection.find(objectCriteria))
