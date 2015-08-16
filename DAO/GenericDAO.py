@@ -7,7 +7,7 @@ class ConnectionToDatabase :
 
     database = None
 
-    #penser à créer un pool de connections réutilisables vers la base
+    #penser ï¿½ crï¿½er un pool de connections rï¿½utilisables vers la base
     #solution actuelle non envisageable en prod
 
     def __init__(self):
@@ -45,7 +45,7 @@ class GenericDAO :
 
     connectionToDatabase = ConnectionToDatabase()
 
-    # Insérer un enregistrement dans une collection
+    # Insï¿½rer un enregistrement dans une collection
     def insertObject(self, collectionName, object):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
@@ -69,18 +69,18 @@ class GenericDAO :
 
         return removeResult
 
-    # Mettre à jour un ou plusieurs enregistrements dans une collection
+    # Mettre ï¿½ jour un ou plusieurs enregistrements dans une collection
     def updateObjects(self, collectionName, objectCriteria, objectUpdate):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
 
-        # Mettre le update operator à $set
+        # Mettre le update operator ï¿½ $set
         addedUpdateOperator = {"$set": objectUpdate}
         updateResult = collection.update_many(objectCriteria, addedUpdateOperator)
 
         return updateResult
 
-    # Méthode à n'utiliser que dans certains cas par la suite à cause du très grand nombre d'enregistrements
+    # Mï¿½thode ï¿½ n'utiliser que dans certains cas par la suite ï¿½ cause du trï¿½s grand nombre d'enregistrements
     def getAllObjects(collectionName):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
@@ -89,10 +89,14 @@ class GenericDAO :
         return recordsList
 
     # Extraire un enregistrement
-    def getOneObject(collectionName, objectID):
+    def getOneObject(collectionName, objectCriteria):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
-        foundObject = collection.find_one(objectID)
+
+        if(collectionName == "users") :
+            foundObject = collection.find_one(objectCriteria, {"userPwd" : False})
+        else :
+            foundObject = collection.find_one(objectCriteria)
 
         return foundObject
 
@@ -100,6 +104,11 @@ class GenericDAO :
     def getObjects(collectionName, objectCriteria):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
-        foundObjects = list(collection.find(objectCriteria))
+
+        if(collectionName == "users") :
+            foundObjects = list(collection.find(objectCriteria, {"userPwd" : False}))
+        else :
+            foundObjects = list(collection.find(objectCriteria))
 
         return foundObjects
+

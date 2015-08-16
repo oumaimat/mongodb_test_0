@@ -1,5 +1,3 @@
-from pandas.tseries.offsets import DateOffset
-
 __author__ = 'OTurki'
 
 from Model.User import  User
@@ -23,28 +21,71 @@ app = Flask(__name__)
 
 genericDAO = GenericDAO()
 
-collectionName = "users"
+
 
 @app.route('/')
 def api_root():
     return 'Welcome'
 
-@app.route('/servus/users', methods=['GET'])
+# Recuperer la liste de tous les utilisateurs
+@app.route('/servus/get/users', methods=['GET'])
 def get_users():
+    collectionName = "users"
+
     usersList = GenericDAO.getAllObjects(collectionName)
 
     res = json.dumps(usersList, cls=MongoJsonEncoder)
 
     return res
 
-@app.route('/servus/user', methods=['POST'])
+# Recuperer un seul utilisateur
+@app.route('/servus/get/user', methods=['POST'])
 def get_user():
 
     request_data = request.json
 
+    collectionName = "users"
+
     user = GenericDAO.getObjects(collectionName, request_data)
 
     res = json.dumps(user, cls=MongoJsonEncoder)
+
+    return res
+
+# Proceder a l'authentification de l'utilisateur
+@app.route('/servus/authentification/user', methods=['POST'])
+def get_authentification_user():
+
+    request_data = request.json
+
+    collectionName = "users"
+
+    # Le hashsage se fera a une etape ulterieure
+    user = GenericDAO.getOneObject(collectionName, request_data)
+
+    res = json.dumps(user, cls=MongoJsonEncoder)
+
+    return res
+
+
+# Verifier existance pseudo utilisateur
+@app.route('/servus/register/verif_login', methods=['POST'])
+def verif_login_existence():
+
+    request_data = request.json
+
+    collectionName = "users"
+
+    user = GenericDAO.getOneObject(collectionName, request_data)
+
+    result = {}
+    # exist prend True si login existant et False sinon
+    if(user == None) :
+        result["login_exists"] = False
+    else :
+        result["login_exists"] = True
+
+    res = json.dumps(result, cls=MongoJsonEncoder)
 
     return res
 
