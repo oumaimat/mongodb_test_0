@@ -38,7 +38,7 @@ def get_users():
 
     return res
 
-# Recuperer un seul utilisateur
+# Recuperer un ou plusieurs utilisateur avec un ensemble de criteres
 @app.route('/servus/get/user', methods=['POST'])
 def get_user():
 
@@ -68,7 +68,7 @@ def get_authentification_user():
     return res
 
 
-# Verifier existance pseudo utilisateur
+# Verifier l'existence du pseudo d'un utilisateur
 @app.route('/servus/register/verif_login', methods=['POST'])
 def verif_login_existence():
 

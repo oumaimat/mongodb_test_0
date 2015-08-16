@@ -84,7 +84,11 @@ class GenericDAO :
     def getAllObjects(collectionName):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
-        recordsList = list(collection.find())
+
+        if(collectionName == "users") :
+            recordsList = list(collection.find({}, {"userPwd" : False}))
+        else :
+             recordsList = list(collection.find())
 
         return recordsList
 
