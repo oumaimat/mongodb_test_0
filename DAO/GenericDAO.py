@@ -1,7 +1,7 @@
 __author__ = 'OTurki'
 
 import pymongo
-
+import os
 
 class ConnectionToDatabase :
 
@@ -18,8 +18,11 @@ class ConnectionToDatabase :
         # Connexion au serveur de Mongo DB
         db_conn=None
 
+        url = os.environ["OPENSHIFT_MONGODB_DB_URL"]
+
         try:
-            db_conn=pymongo.MongoClient()
+            # db_conn=pymongo.MongoClient("mongodb://admin:3usRy1SmJ8gH@127.0.0.1:37391/")
+            db_conn=pymongo.MongoClient(url)
             print("Connected successfully!!!")
             print(db_conn)
         except pymongo.errors.ConnectionFailure :
@@ -27,7 +30,7 @@ class ConnectionToDatabase :
 
 
         # Connexion a la base du projet
-        db = db_conn["project_database"]
+        db = db_conn["mongodbtest0"]
 
         #function result
         ConnectionToDatabase.database = db
@@ -49,7 +52,7 @@ class GenericDAO :
     def insertObject(self, collectionName, object):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
-        insertionResult = collection.insert_one(object)
+        insertionResult = collection.insert(object)
 
         return insertionResult
 

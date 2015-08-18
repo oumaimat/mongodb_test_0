@@ -89,6 +89,30 @@ def verif_login_existence():
 
     return res
 
+# Enregistrer un utilisateur
+# Penser a refaire les tests cote client (longueur du pwd, champs non vides,...)
+@app.route('/servus/register/user', methods=['POST'])
+def register_user():
+
+    request_data = request.json
+
+    #   La verification des champs doit se faire a ce niveau, renvoyer une erreur si un test echoue
+
+    collectionName = "users"
+
+    insertionRes = genericDAO.insertObject(collectionName, request_data)
+
+    result = {}
+    # exist prend True si insertion OK et False sinon
+    if(insertionRes == None) :
+        result["insertion_OK"] = False
+    else :
+        result["insertion_OK"] = True
+
+    res = json.dumps(result, cls=MongoJsonEncoder)
+
+    return res
+
 if __name__ == '__main__':
      app.run()
 
