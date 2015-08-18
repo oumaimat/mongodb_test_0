@@ -20,6 +20,8 @@ class ConnectionToDatabase :
 
         url = os.environ["OPENSHIFT_MONGODB_DB_URL"]
 
+        # test
+
         try:
             # db_conn=pymongo.MongoClient("mongodb://admin:3usRy1SmJ8gH@127.0.0.1:37391/")
             db_conn=pymongo.MongoClient(url)
