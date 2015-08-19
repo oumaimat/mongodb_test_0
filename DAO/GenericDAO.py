@@ -34,6 +34,9 @@ class ConnectionToDatabase :
         # Connexion a la base du projet
         db = db_conn["mongodbtest0"]
 
+        x=None
+        x=3
+
         #function result
         ConnectionToDatabase.database = db
 
