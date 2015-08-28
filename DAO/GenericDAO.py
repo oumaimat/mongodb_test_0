@@ -18,13 +18,13 @@ class ConnectionToDatabase :
         # Connexion au serveur de Mongo DB
         db_conn=None
 
-        url = os.environ["OPENSHIFT_MONGODB_DB_URL"]
+        # url = os.environ["OPENSHIFT_MONGODB_DB_URL"]
 
         # test
 
         try:
             # db_conn=pymongo.MongoClient("mongodb://admin:3usRy1SmJ8gH@127.0.0.1:37391/")
-            db_conn=pymongo.MongoClient(url)
+            # db_conn=pymongo.MongoClient(url)
             print("Connected successfully!!!")
             print(db_conn)
         except pymongo.errors.ConnectionFailure :
@@ -33,9 +33,6 @@ class ConnectionToDatabase :
 
         # Connexion a la base du projet
         db = db_conn["mongodbtest0"]
-
-        x=None
-        x=3
 
         #function result
         ConnectionToDatabase.database = db
