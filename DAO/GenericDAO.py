@@ -1,11 +1,17 @@
 __author__ = 'OTurki'
 
 import pymongo
+from gridfs import GridFS
+from PIL import Image
+import base64
+from base64 import decodebytes
 import os
 
 class ConnectionToDatabase :
 
     database = None
+    fs = None
+
 
     #penser � cr�er un pool de connections r�utilisables vers la base
     #solution actuelle non envisageable en prod
@@ -24,7 +30,7 @@ class ConnectionToDatabase :
 
         try:
             # db_conn=pymongo.MongoClient("mongodb://admin:3usRy1SmJ8gH@127.0.0.1:37391/")
-            # db_conn=pymongo.MongoClient(url)
+            db_conn=pymongo.MongoClient()
             print("Connected successfully!!!")
             print(db_conn)
         except pymongo.errors.ConnectionFailure :
@@ -32,11 +38,13 @@ class ConnectionToDatabase :
 
 
         # Connexion a la base du projet
-        db = db_conn["mongodbtest0"]
+        #db = db_conn["mongodbtest0"]
+        db = db_conn["project_database"]
 
-        #function result
+
+        #Initialisation des variables globales
         ConnectionToDatabase.database = db
-
+        ConnectionToDatabase.fs = GridFS(db)
 
     def getCollection(self, collection_name):
 
@@ -54,6 +62,14 @@ class GenericDAO :
     def insertObject(self, collectionName, object):
 
         collection =  GenericDAO.connectionToDatabase.getCollection(collectionName)
+
+        # Enregistrer l'image dans GridFS si l'utilisateur a uploadé son image
+        if (collectionName == "users") and (object["userProfilePicture"] != None ) :
+
+            fileName = object["userLogin"]
+
+            object["userProfilePicture"] = self.buildGridFsImage(object["userProfilePicture"], fileName)
+
         insertionResult = collection.insert(object)
 
         return insertionResult
@@ -85,7 +101,7 @@ class GenericDAO :
 
         return updateResult
 
-    # M�thode � n'utiliser que dans certains cas par la suite � cause du tr�s grand nombre d'enregistrements
+    # Si utilisée, il faut limiter le nombre d'enregistrements retourné (exemple 100)
     def getAllObjects(collectionName):
 
         collection = GenericDAO.connectionToDatabase.getCollection(collectionName)
@@ -104,6 +120,9 @@ class GenericDAO :
 
         if(collectionName == "users") :
             foundObject = collection.find_one(objectCriteria, {"userPwd" : False})
+
+            if foundObject != None and foundObject["userProfilePicture"] != None:
+                foundObject["userProfilePicture"] = GenericDAO.getGridFsImage(foundObject["userProfilePicture"])
         else :
             foundObject = collection.find_one(objectCriteria)
 
@@ -116,8 +135,68 @@ class GenericDAO :
 
         if(collectionName == "users") :
             foundObjects = list(collection.find(objectCriteria, {"userPwd" : False}))
+
+            if foundObjects != None :
+                for user in foundObjects :
+                    if user["userProfilePicture"] != None :
+                        user["userProfilePicture"] = GenericDAO.getGridFsImage(user["userProfilePicture"])
+
         else :
             foundObjects = list(collection.find(objectCriteria))
 
         return foundObjects
+
+    #Insérer un enregistrement contenant une image dans la base
+    def buildGridFsImage(self, encodedImage, fileName):
+
+        # Créer un fichier image temporaire à partir des Bytes
+        imageToSave = open("temp_images/"+fileName+".jpg","wb+")
+        imageToSave.write(decodebytes(encodedImage))
+
+        # Insérer le fichier image temporaire dans GridFS
+        imageID = ConnectionToDatabase.fs.put(imageToSave, content_type="image/jpeg")
+
+        imageToSave.close()
+
+        # Supprimer le fichier image temporaire du disque
+        os.remove("temp_images/"+fileName+".jpg")
+
+        return imageID
+
+
+    #Lire un enregistrement contenant une image dans la base
+    def getGridFsImage(imageID):
+
+        # Récupérer l'objet Image depuis l'ID de l'image
+        gridFsRes = ConnectionToDatabase.fs.get(imageID)
+
+
+        # Encoder l'image en un format de Bytes qui pourra être envoyé par le webservice
+        encodedImage = base64.b64encode(gridFsRes.read())
+
+        # imageToShow.show()
+
+        return encodedImage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -52,11 +52,24 @@ collectionName = "users"
 # tester la méthode insertObject
 #
 # inserer un user test dans la collection
-# userToInsert = User("pseudo55", "55", "nom11", "prénom11")
-# userToInsert2 = User("pseudo56", "56", "nom12", "prénom12")
+
+import base64
+from base64 import decodebytes
+
+imageToSave = open("image_test.jpg", "rb")
+
+encodedImage = base64.b64encode(imageToSave.read())
+
+# fileToSave = open("temp_images/image_test_2.jpg","wb")
 #
-# print ("\n Résultat insertion :\n", genericDAO.insertObject(collectionName, userToInsert.parseToDict()))
-# print ("\n Résultat insertion :\n", genericDAO.insertObject(collectionName, userToInsert2.parseToDict()))
+# fileToSave.write(decodebytes(encodedImage))
+
+
+userToInsert = User("login1097", "1097", encodedImage, "nom 1097", "prénom 1097", 1, "user1097@gmail.com", "France")
+
+
+print ("\n Résultat insertion :\n", genericDAO.insertObject(collectionName, userToInsert.parseToDict()))
+
 
 # tester la méthode UpdateObjects
 #
@@ -73,7 +86,7 @@ usersList = GenericDAO.getAllObjects(collectionName)
 for user in usersList:
     print(user)
 
-# # tester la méthode getObjects
+# tester la méthode getObjects
 # criteria = {"userPseudo" : "pseudo test 4"}
 #
 # usersToRemoveList = genericDAO.getObjects(collectionName, criteria)
@@ -92,8 +105,7 @@ for user in usersList:
 
 # tester la méthode getOneObject
 #
-# retrievedUser = User.parseToUser(usersList[0])
-# userGetOneTest = GenericDAO.getOneObject(collectionName, retrievedUser._id )
+# userGetOneTest = GenericDAO.getOneObject(collectionName, {"userLogin" : "login1092"} )
 #
 # print("\n userGetOneTest : \n", userGetOneTest)
 
@@ -110,4 +122,7 @@ for user in usersList:
 # prefs = []
 # prefs.append(pref1)
 # prefs.append(pref2)
+
+
+
 

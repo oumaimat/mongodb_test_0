@@ -5,7 +5,7 @@ class User :
     _id = ""
     userLogin = ""
     userPwd = ""
-    userProfilePicture = ""
+    userProfilePicture = None
     userLastName = ""
     userName = ""
     userGender = ""
@@ -19,7 +19,7 @@ class User :
         self.userProfilePicture = userProfilePicture
         self.userLastName = userLastName
         self.userName = userName
-        self.userGender = userGender
+        self.userGender = "M" if userGender == 0 else "F"
         self.userEmail = userEmail
         self.userCountry = userCountry
 
@@ -30,7 +30,7 @@ class User :
 
         user["userLogin"] = self.userLogin
         user["userPwd"] = self.userPwd
-        # user["userProfilePicture"] = self.userProfilePicture
+        user["userProfilePicture"] = self.userProfilePicture
         user["userLastName"] = self.userLastName
         user["userName"] = self.userName
         user["userGender"] = self.userGender

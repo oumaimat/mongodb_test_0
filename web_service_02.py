@@ -5,6 +5,7 @@ from DAO.GenericDAO import GenericDAO
 
 from flask import Flask, jsonify, request
 from bson.objectid import ObjectId
+
 import json
 import datetime
 
@@ -14,6 +15,8 @@ class MongoJsonEncoder(json.JSONEncoder):
         if isinstance(objectToEncode, (datetime.datetime, datetime.date)):
             return objectToEncode.isoformat()
         elif isinstance(objectToEncode, ObjectId):
+            return str(objectToEncode)
+        elif isinstance(objectToEncode, bytes) :
             return str(objectToEncode)
         return json.JSONEncoder.default(self, objectToEncode)
 
@@ -60,7 +63,7 @@ def get_authentification_user():
 
     collectionName = "users"
 
-    # Le hashsage se fera a une etape ulterieure
+    # Le hashage se fera a une etape ulterieure
     user = GenericDAO.getOneObject(collectionName, request_data)
 
     res = json.dumps(user, cls=MongoJsonEncoder)
@@ -113,6 +116,8 @@ def register_user():
 
     return res
 
+
+# Main application
 if __name__ == '__main__':
      app.run()
 

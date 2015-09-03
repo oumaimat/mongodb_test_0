@@ -19,14 +19,17 @@ class SubmittedChoice :
     originItem1 = ""
     originItem2 = ""
 
-    cat_id = ""
+    catNb = ""
     catName = ""
     catNbValidationDays = 0
 
 
 
 
-    def __init__(self, user_id, choiceCountry, choiceUploadDate, item1, item2, nbItem1, nbItem2, nbTotal, nbOriginRequests, originItem1, originItem2, cat_id, catName, catNbValidationDays):
+    def __init__(self, user_id, choiceCountry, choiceUploadDate, item1, item2
+                 , nbItem1, nbItem2, nbTotal, nbOriginRequests, originItem1, originItem2
+                 , catNb, catName, catNbValidationDays):
+
         self.user_id = user_id
         self.choiceCountry = choiceCountry
 
@@ -42,7 +45,7 @@ class SubmittedChoice :
         self.originItem1 = originItem1
         self.originItem2 = originItem2
 
-        self.cat_id = cat_id
+        self.catNb = catNb
         self.catName = catName
         self.catNbValidationDays = catNbValidationDays
 
@@ -50,36 +53,38 @@ class SubmittedChoice :
 
     def parseToDict(self):
         subChoice = {}
-
-        subChoice["user_id"] = self.user_id
-        subChoice["choiceCountry"] = self.choiceCountry
-
-
-        subChoice["choiceUploadDate"] = self.choiceUploadDate
-        subChoice["item1"] = self.item1
-        subChoice["item2"] = self.item2
-
-        subChoice["nbItem1"] = self.nbItem1
-        subChoice["nbItem2"] = self.nbItem2
-        subChoice["nbTotal"] = self.nbTotal
-
-        subChoice["nbOriginRequests"] = self.nbOriginRequests
-        subChoice["originItem1"] = self.originItem1
-        subChoice["originItem2"] = self.originItem2
-
-        subChoice["cat_id"] = self.cat_id
-        subChoice["catName"] = self.catName
-        subChoice["catNbValidationDays"] = self.catNbValidationDays
-
-        #Function return result
-        return subChoice
-
-    def parseToCategory(subChoiceDict):
-
-
-        # subChoice = SubmittedChoice(subChoiceDict["catName"], subChoiceDict["catNbValidationDays"])
-
-        subChoice._id = subChoiceDict["_id"]
+        #
+        # subChoice["user_id"] = self.user_id
+        # subChoice["choiceCountry"] = self.choiceCountry
+        #
+        #
+        # subChoice["choiceUploadDate"] = self.choiceUploadDate
+        # subChoice["item1"] = self.item1
+        # subChoice["item2"] = self.item2
+        #
+        # subChoice["nbItem1"] = self.nbItem1
+        # subChoice["nbItem2"] = self.nbItem2
+        # subChoice["nbTotal"] = self.nbTotal
+        #
+        # subChoice["nbOriginRequests"] = self.nbOriginRequests
+        # subChoice["originItem1"] = self.originItem1
+        # subChoice["originItem2"] = self.originItem2
+        #
+        # subChoice["catNb"] = self.catNb
+        # subChoice["catName"] = self.catName
+        # subChoice["catNbValidationDays"] = self.catNbValidationDays
 
         #Function return result
-        return subChoice
+        # return subChoice
+
+    def parseToSubChoice(subChoiceDict):
+
+        subChoice = SubmittedChoice(
+        #     subChoiceDict["user_id"],
+        #     subChoiceDict["choiceCountry"]
+        )
+        #
+        # subChoice._id = subChoiceDict["_id"]
+        #
+        # #Function return result
+        # return subChoice
